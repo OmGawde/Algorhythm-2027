@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual Technical Festival – Algorhythm 2027 | VIT Technical Council</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for Andromeda Galaxy & Smooth Planets Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        tech: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        space: {
+                            950: '#020510',
+                            900: '#060c21',
+                            800: '#0c1636',
+                        },
+                        isro: {
+                            yellow: '#facc15',
+                            gold: '#eab308',
+                            orange: '#f97316',
+                            cyan: '#06b6d4',
+                            blue: '#3b82f6',
+                            purple: '#8b5cf6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Deep Space Blue & Neon Yellow Aesthetics */
+        body {
+            background-color: #020510;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* 3D Canvas & Dynamic Depth Blur Transition */
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            transition: filter 0.4s ease-out;
+        }
+
+        /* Ambient Floating Planetary Orbs that intensify on scroll */
+        #planet-blur-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+
+        /* High-Contrast Deep Blue Liquid Glassmorphism */
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(8, 16, 40, 0.88) 0%, rgba(3, 8, 22, 0.95) 100%);
+            backdrop-filter: blur(24px) saturate(190%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.8), inset 0 1px 1px 0 rgba(250, 204, 21, 0.15);
+        }
+
+        /* Glowing Yellow Neon Border for Main Hero & Featured Sections */
+        .neon-yellow-box {
+            background: linear-gradient(135deg, rgba(7, 15, 38, 0.9) 0%, rgba(2, 6, 20, 0.96) 100%);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border: 2px solid rgba(250, 204, 21, 0.85);
+            box-shadow: 0 0 28px rgba(250, 204, 21, 0.35),
+                0 0 65px rgba(59, 130, 246, 0.25),
+                inset 0 0 22px rgba(250, 204, 21, 0.15);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .neon-yellow-box:hover {
+            border-color: #fef08a;
+            box-shadow: 0 0 38px rgba(250, 204, 21, 0.55),
+                0 0 80px rgba(59, 130, 246, 0.35),
+                inset 0 0 28px rgba(250, 204, 21, 0.22);
+        }
+
+        . neon-yellow-pill {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(5, 10, 28, 0.98) 100%);
+            border: 1.5px solid rgba(250, 204, 21, 0.75);
+            box-shadow: 0 0 18px rgba(250, 204, 21, 0.3), inset 0 0 10px rgba(250, 204, 21, 0.12);
+        }
+
+        .liquid-glass-interactive {
+            background: linear-gradient(135deg, rgba(10, 19, 44, 0.9) 0%, rgba(5, 10, 26, 0.96) 100%);
+            backdrop-filter: blur(22px) saturate(180%);
+            -webkit-backdrop-filter: blur(22px) saturate(180%);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .liquid-glass-interactive:hover {
+            transform: translateY(-6px);
+            background: linear-gradient(135deg, rgba(14, 28, 64, 0.95) 0%, rgba(8, 16, 38, 0.99) 100%);
+            border-color: rgba(250, 204, 21, 0.85);
+            box-shadow: 0 20px 45px -10px rgba(250, 204, 21, 0.4),
+                0 0 25px rgba(56, 189, 248, 0.25),
+                inset 0 1px 2px 0 rgba(250, 204, 21, 0.35);
+        }
+
+        .liquid-modal {
+            background: linear-gradient(145deg, rgba(6, 12, 30, 0.97) 0%, rgba(2, 6, 18, 0.99) 100%);
+            backdrop-filter: blur(32px) saturate(200%);
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            border: 1.5px solid rgba(250, 204, 21, 0.65);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(250, 204, 21, 0.25);
+        }
+
+        /* Connected Timeline Line Styles */
+        .timeline-track-h {
+            height: 4px;
+            background: linear-gradient(90deg, #38bdf8 0%, #facc15 50%, #3b82f6 100%);
+            box-shadow: 0 0 18px rgba(250, 204, 21, 0.75);
+            border-radius: 9999px;
+        }
+
+        /* Glowing Timeline Node Dot */
+        .track-node {
+            width: 22px;
+            height: 22px;
+            border-radius: 9999px;
+            background: radial-gradient(circle, #ffffff 30%, #facc15 70%, #ca8a04 100%);
+            border: 3px solid #04091a;
+            box-shadow: 0 0 16px #facc15, 0 0 30px #38bdf8;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 20;
+            cursor: pointer;
+        }
+
+        .track-node::after {
+            content: '';
+            position: absolute;
+            inset: -7px;
+            border-radius: 9999px;
+            border: 2px solid rgba(250, 204, 21, 0.7);
+            animation: pulse-ring 2.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .group:hover .track-node {
+            transform: scale(1.4);
+            background: radial-gradient(circle, #ffffff 35%, #fef08a 75%, #eab308 100%);
+            box-shadow: 0 0 25px #facc15, 0 0 50px #facc15;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.95;
+            }
+
+            80%,
+            100% {
+                transform: scale(1.9);
+                opacity: 0;
+            }
+        }
+
+        /* Interactive Click Cosmic Ripple Effect */
+        .cosmic-click-wave {
+            position: fixed;
+            border-radius: 9999px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(250, 204, 21, 0.9);
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.8), inset 0 0 15px rgba(56, 189, 248, 0.6);
+            animation: cosmic-ripple-anim 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cosmic-ripple-anim {
+            0% {
+                width: 8px;
+                height: 8px;
+                opacity: 1;
+            }
+
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020510;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(250, 204, 21, 0.45);
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(250, 204, 21, 0.85);
+        }
+
+        /* Glowing Yellow & Blue Text Gradient */
+        .text-glow-gradient {
+            background: linear-gradient(135deg, #ffffff 10%, #fef08a 42%, #facc15 72%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 24px rgba(250, 204, 21, 0.35));
+        }
+
+        .yellow-highlight-text {
+            color: #fef08a;
+            text-shadow: 0 0 14px rgba(250, 204, 21, 0.55);
+        }
+
+        /* Bracket connector lines */
+        .bracket-card {
+            background: rgba(15, 23, 42, 0.78);
+            border: 1px solid rgba(250, 204, 21, 0.22);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-yellow-400 selection:text-slate-950">
+
+    <!-- 3D ANDROMEDA GALAXY & SMOOTH PLANETS CANVAS -->
+    <div id="webgl-container"></div>
+
+    <!-- AMBIENT SOFT BLUR PLANETARY GLOW LAYER (Fades in as we scroll down) -->
+    <div id="planet-blur-layer" class="overflow-hidden">
+        <div id="blur-orb-1"
+            class="absolute -top-24 -left-24 w-[32rem] h-[32rem] rounded-full bg-blue-500/20 blur-[110px] transition-transform duration-700">
+        </div>
+        <div id="blur-orb-2"
+            class="absolute top-1/3 -right-32 w-[38rem] h-[38rem] rounded-full bg-indigo-600/25 blur-[130px] transition-transform duration-700">
+        </div>
+        <div id="blur-orb-3"
+            class="absolute -bottom-32 left-1/4 w-[34rem] h-[34rem] rounded-full bg-yellow-500/15 blur-[120px] transition-transform duration-700">
+        </div>
+    </div>
+
+    <!-- TOP STICKY LIQUID GLASS NAVIGATION BAR (Director Presentation Controls) -->
+    <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-3">
+        <nav
+            class="max-w-7xl mx-auto liquid-glass rounded-2xl px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4 border border-yellow-400/30">
+            <!-- Brand / Institute Title with Algorhythm Logo on Extreme Start -->
+            <div class="flex items-center gap-3.5 group">
+                <!-- Extreme Start Algorhythm Logo Box (Click to upload custom logo if needed, or loads photos/logo.png) -->
+                <label title="Algorhythm 2027 Logo (Click to set custom logo image if desired)"
+                    class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 via-amber-500 to-blue-600 p-[1.5px] shadow-[0_0_20px_rgba(250,204,21,0.45)] cursor-pointer shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                    <div
+                        class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden relative">
+                        <img id="navbar-algo-logo" src="photos/logo.png" alt="Algorhythm Logo"
+                            class="w-full h-full object-contain p-0.5 hidden"
+                            onload="this.classList.remove('hidden'); document.getElementById('navbar-algo-svg-fallback').classList.add('hidden');"
+                            onerror="this.classList.add('hidden'); document.getElementById('navbar-algo-svg-fallback').classList.remove('hidden');" />
+                        <!-- Crisp Built-in Algorhythm Emblem Fallback -->
+                        <svg id="navbar-algo-svg-fallback" viewBox="0 0 100 100" class="w-9 h-9">
+                            <defs>
+                                <linearGradient id="algoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fef08a" />
+                                    <stop offset="50%" stop-color="#facc15" />
+                                    <stop offset="100%" stop-color="#38bdf8" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="50" cy="50" r="44" fill="none" stroke="url(#algoGrad)" stroke-width="4"
+                                stroke-dasharray="18 6" />
+                            <polygon points="50,14 82,78 67,78 50,42 33,78 18,78" fill="url(#algoGrad)" />
+                            <polygon points="36,58 64,58 70,70 30,70" fill="#38bdf8" />
+                            <circle cx="50" cy="28" r="4" fill="#ffffff" />
+                        </svg>
+                    </div>
+                    <input type="file" accept="image/*" class="hidden" onchange="handleLogoUpload(event)" />
+                </label>
+
+                <a href="#page-1" onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.8)"
+                    class="block">
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="font-display font-extrabold text-sm sm:text-base tracking-wider text-white">ALGORHYTHM
+                            <span class="text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.6)]">2027</span></span>
+                        <span
+                            class="hidden md:inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/50 shadow-[0_0_12px_rgba(250,204,21,0.25)]">Gaganyaan
+                            Theme</span>
+                    </div>
+                    <p class="text-[11px] text-cyan-200 font-medium">Vidyalankar Institute of Technology • <span
+                            class="text-yellow-300 font-semibold">Technical Council 2026-27</span></p>
+                </a>
+            </div>
+
+            <!-- Page Navigation Pills -->
+            <div class="flex items-center gap-1 sm:gap-2 bg-slate-950/90 p-1.5 rounded-xl border border-yellow-400/30">
+                <a href="#page-1" data-nav="page-1"
+                    onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.6)"
+                    class="nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-yellow-400/20 text-yellow-300 border border-yellow-400/60 shadow-[0_0_12px_rgba(250,204,21,0.3)]">
+                    1. Overview
+                </a>
+                <a href="#page-2" data-nav="page-2"
+                    onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.6)"
+                    class="nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-yellow-300 transition-all">
+                    2. Event Timeline
+                </a>
+                <a href="#page-3" data-nav="page-3"
+                    onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.6)"
+                    class="nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-yellow-300 transition-all">
+                    3. Budget
+                </a>
+                <a href="#page-4" data-nav="page-4"
+                    onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.6)"
+                    class="nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 hover:text-yellow-300 transition-all">
+                    4. Outcomes
+                </a>
+            </div>
+
+            <!-- Director Approval Status Badge -->
+            <div class="hidden xl:flex items-center gap-3">
+                <div class="text-right">
+                    <div class="text-xs font-semibold text-yellow-300 flex items-center justify-end gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
+                        Date: 6th November 2026
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 1: HERO GALAXY & GAGANYAAN MISSION BRIEFING                      -->
+    <!-- ===================================================================== -->
+    <section id="page-1"
+        class="relative min-h-screen pt-28 pb-16 px-4 sm:px-8 flex flex-col justify-center items-center">
+        <div class="max-w-6xl mx-auto w-full text-center space-y-8">
+
+            <!-- Top Official Proposal Pill -->
+            <div
+                class="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-4 px-6 py-2.5 rounded-full neon-yellow-pill text-xs sm:text-sm text-white">
+                <span class="text-slate-400">•</span>
+                <span class="text-yellow-300 font-bold tracking-wide">Technical Council 2026-27</span>
+                <span class="text-slate-400">•</span>
+                <span class="text-cyan-200 font-semibold"><i
+                        class="fa-solid fa-calendar-check mr-1 text-yellow-400"></i>20th Jan – 13th Feb 2027</span>
+            </div>
+
+            <!-- Main Festival Title with Glowing Neon Yellow Border Box -->
+            <div class="neon-yellow-box rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto space-y-4 relative overflow-hidden">
+                <div
+                    class="absolute -top-24 -right-24 w-56 h-56 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div
+                    class="absolute -bottom-24 -left-24 w-56 h-56 bg-blue-500/15 rounded-full blur-3xl pointer-events-none">
+                </div>
+
+                <h1
+                    class="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-tight text-glow-gradient">
+                    Annual Technical Festival –<br class="hidden sm:inline" /> Algorhythm 2027
+                </h1>
+                <div
+                    class="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-medium text-blue-200">
+                    <span class="px-3.5 py-1 rounded-full bg-blue-500/20 border border-blue-400/40 text-cyan-200">
+                        <i class="fa-solid fa-satellite-dish text-yellow-400 mr-1.5"></i>Central Theme: ISRO Gaganyaan
+                        Mission
+                    </span>
+                </div>
+            </div>
+
+            <!-- Quick Key Metrics Glass Strip -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto pt-2">
+                <div class="liquid-glass rounded-2xl p-4 sm:p-5 text-left border-l-4 border-l-yellow-400">
+                    <div class="text-xs uppercase tracking-wider text-slate-300 font-medium">Duration of Event</div>
+                    <div class="font-display font-bold text-lg sm:text-2xl text-white mt-1">20 Jan – 13 Feb</div>
+                    <div class="text-xs text-yellow-300 font-medium mt-1"><i
+                            class="fa-solid fa-location-dot mr-1"></i>Venue: VIT Campus</div>
+                </div>
+                <div class="liquid-glass rounded-2xl p-4 sm:p-5 text-left border-l-4 border-l-cyan-400">
+                    <div class="text-xs uppercase tracking-wider text-slate-300 font-medium">Institute Budget</div>
+                    <div class="font-display font-bold text-lg sm:text-2xl text-white mt-1">₹4,73,500/-</div>
+                </div>
+                <div class="liquid-glass rounded-2xl p-4 sm:p-5 text-left border-l-4 border-l-yellow-400">
+                    <div class="text-xs uppercase tracking-wider text-slate-300 font-medium">Total Proposed Budget</div>
+                    <div class="font-display font-bold text-lg sm:text-2xl yellow-highlight-text mt-1">₹7,38,000/-</div>
+                    <div class="text-xs text-yellow-300 font-medium mt-1">Income & Expenditure</div>
+                </div>
+                <div class="liquid-glass rounded-2xl p-4 sm:p-5 text-left border-l-4 border-l-emerald-400">
+                    <div class="text-xs uppercase tracking-wider text-slate-300 font-medium">Expected Revenue</div>
+                    <div class="font-display font-bold text-lg sm:text-2xl text-white mt-1">₹2,64,500/-</div>
+                    <div class="text-xs text-emerald-300 font-medium mt-1">Registrations & Sponsorship</div>
+                </div>
+            </div>
+
+            <!-- Action Navigation Bar -->
+            <div
+                class="liquid-glass rounded-3xl p-6 sm:p-7 max-w-5xl mx-auto text-left grid grid-cols-1 lg:grid-cols-12 gap-6 items-center border border-yellow-400/35">
+                <div class="lg:col-span-8 space-y-2">
+                    <h2 class="font-display text-lg sm:text-xl font-bold text-white">
+                        Timeline, Event Outcomes & Complete Budget Breakdown
+                    </h2>
+                </div>
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <a href="#page-2" onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.8)"
+                        class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-300 hover:to-amber-300 text-slate-950 font-display font-extrabold text-xs sm:text-sm tracking-wide uppercase text-center shadow-[0_0_25px_rgba(250,204,21,0.45)] transition-all flex items-center justify-center gap-2">
+                        <span>View Event Timeline</span>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                    <a href="#page-3" onclick="triggerCosmicWarp(window.innerWidth/2, window.innerHeight/2, 1.8)"
+                        class="w-full py-3.5 px-5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-yellow-400/50 hover:border-yellow-400 text-yellow-300 font-semibold text-xs sm:text-sm text-center transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-invoice-dollar text-yellow-400"></i>
+                        <span>View Budget Sheet</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 2: INTERACTIVE EVENT TIMELINE (ANNEXURE I & II)                  -->
+    <!-- ===================================================================== -->
+    <section id="page-2" class="relative min-h-screen py-24 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto space-y-10">
+
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div class="space-y-2">
+                    <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">
+                        Event Timeline <span class="yellow-highlight-text">(20th Jan – 12th Feb 2027)</span>
+                    </h2>
+                </div>
+            </div>
+
+            <!-- DESKTOP CONNECTED TIMELINE (2 Rows x 6 Columns matching Page 2 of PDF) -->
+            <div class="hidden lg:block relative py-6">
+
+                <!-- Right Side U-Turn Connector joining 31st Jan to 3rd Feb -->
+                <div
+                    class="absolute right-4 top-[112px] bottom-[152px] w-12 rounded-r-3xl border-r-4 border-t-4 border-b-4 border-yellow-400/85 shadow-[0_0_22px_rgba(250,204,21,0.55)] pointer-events-none z-0">
+                </div>
+
+                <!-- ROW 1: 20th Jan -> 31st Jan -->
+                <div class="mb-16 relative">
+                    <!-- Horizontal Glowing Connector Line -->
+                    <div class="absolute left-6 right-8 top-[98px] timeline-track-h z-10"></div>
+
+                    <div id="railway-row-1" class="grid grid-cols-6 gap-4 relative z-20 pr-8">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- ROW 2: 3rd Feb -> 12th Feb -->
+                <div class="relative">
+                    <!-- Horizontal Glowing Connector Line -->
+                    <div class="absolute left-6 right-8 top-[98px] timeline-track-h z-10"></div>
+
+                    <div id="railway-row-2" class="grid grid-cols-6 gap-4 relative z-20 pr-8">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOBILE / TABLET VERTICAL TIMELINE -->
+            <div class="lg:hidden relative pl-8 space-y-6 before:content-[''] before:absolute before:left-3.5 before:top-4 before:bottom-4 before:w-1.5 before:bg-gradient-to-b before:from-yellow-400 before:via-cyan-400 before:to-blue-500 before:rounded-full"
+                id="railway-mobile">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- 5th Feb Individual Robotics Events Quick Bar -->
+            <div class="liquid-glass rounded-2xl p-5 sm:p-6 border border-yellow-400/40">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-yellow-300">
+                            <i class="fa-solid fa-gears mr-1.5"></i> 5th February 2027 • Individual Robotics
+                            Competitions
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5 w-full md:w-auto">
+                        <button onclick="openEventModal('robo-race')"
+                            class="flex-1 md:flex-initial px-4 py-2.5 rounded-xl liquid-glass-interactive text-xs font-display font-semibold text-white flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-flag-checkered text-yellow-400"></i> Robo Race (Ground 2)
+                        </button>
+                        <button onclick="openEventModal('robo-soccer')"
+                            class="flex-1 md:flex-initial px-4 py-2.5 rounded-xl liquid-glass-interactive text-xs font-display font-semibold text-white flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-futbol text-cyan-400"></i> Robo Soccer (Gate 2)
+                        </button>
+                        <button onclick="openEventModal('robo-sumo')"
+                            class="flex-1 md:flex-initial px-4 py-2.5 rounded-xl liquid-glass-interactive text-xs font-display font-semibold text-white flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-circle-dot text-yellow-400"></i> Robo Sumo (Gate 2)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 3: FULL TOTAL CUMULATIVE BUDGET & REVENUE STATEMENT              -->
+    <!-- ===================================================================== -->
+    <section id="page-3" class="relative min-h-screen py-24 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto space-y-10">
+
+            <!-- Section Header -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="space-y-2">
+                    <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">
+                        Total Cumulative Budget & Revenue <span class="yellow-highlight-text">(₹7,38,000/-)</span>
+                    </h2>
+                </div>
+
+                <!-- View Switcher Tabs -->
+                <div
+                    class="flex flex-wrap gap-2 bg-slate-950/80 p-1.5 rounded-2xl border border-yellow-400/30 self-start">
+                    <button onclick="switchBudgetTab('annexure3')" id="tab-btn-annexure3"
+                        class="px-4 py-2 rounded-xl text-xs font-bold bg-yellow-400 text-slate-950 shadow-lg shadow-yellow-400/30 transition-all">
+                        Annexure-III: Event-Wise Breakdown
+                    </button>
+                    <button onclick="switchBudgetTab('format2')" id="tab-btn-format2"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-yellow-300 transition-all">
+                        Format-II: Executive Summary
+                    </button>
+                    <button onclick="switchBudgetTab('revenue')" id="tab-btn-revenue"
+                        class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-yellow-300 transition-all">
+                        Expected Revenue Structure (₹2,64,500)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top Financial Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Source 1 -->
+                <div class="liquid-glass rounded-2xl p-6 relative overflow-hidden border border-cyan-400/30">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-cyan-300">1. From
+                            Institute Budget</span>
+                        <span
+                            class="text-xs px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">64.16%
+                            of Total</span>
+                    </div>
+                    <div class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3">₹4,73,500/-
+                    </div>
+                    <div class="w-full bg-slate-800/80 h-2 rounded-full mt-4 overflow-hidden">
+                        <div class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full"
+                            style="width: 64.16%"></div>
+                    </div>
+                </div>
+
+                <!-- Source 2 -->
+                <div class="liquid-glass rounded-2xl p-6 relative overflow-hidden border border-emerald-400/30">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-300">2.
+                            Registrations & Passes</span>
+                        <span
+                            class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">22.29%
+                            of Total</span>
+                    </div>
+                    <div class="font-display text-3xl sm:text-4xl font-extrabold text-white mt-3">₹1,64,500/-
+                    </div>
+                    <div class="w-full bg-slate-800/80 h-2 rounded-full mt-4 overflow-hidden">
+                        <div class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full"
+                            style="width: 22.29%"></div>
+                    </div>
+                </div>
+
+                <!-- Source 3 -->
+                <div class="liquid-glass rounded-2xl p-6 relative overflow-hidden border border-yellow-400/40">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-yellow-300">3. Expected
+                            Sponsorship</span>
+                        <span
+                            class="text-xs px-2.5 py-1 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/40">13.55%
+                            of Total</span>
+                    </div>
+                    <div class="font-display text-3xl sm:text-4xl font-extrabold yellow-highlight-text mt-3">
+                        ₹1,00,000/-</div>
+                    <div class="w-full bg-slate-800/80 h-2 rounded-full mt-4 overflow-hidden">
+                        <div class="bg-gradient-to-r from-yellow-400 to-amber-500 h-full rounded-full"
+                            style="width: 13.55%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 1: ANNEXURE-III DETAILED EVENT-WISE EXPENDITURE (DEFAULT) -->
+            <div id="budget-tab-annexure3" class="liquid-glass rounded-3xl overflow-hidden border border-yellow-400/30">
+                <div
+                    class="p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl font-bold text-white">Annexure – III:
+                            Detailed Distribution of Budget (Event-Wise)</h3>
+                    </div>
+                    <span
+                        class="px-4 py-2 rounded-xl bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 font-display text-xs font-bold">
+                        Grand Total Balanced: ₹7,38,000/-
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="border-b border-white/10 text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/60">
+                                <th class="py-3.5 px-4">Sr. No.</th>
+                                <th class="py-3.5 px-4">Event / Expenditure Account Head</th>
+                                <th class="py-3.5 px-4">Itemized Breakdown</th>
+                                <th class="py-3.5 px-4 text-right">Item Cost (Rs.)</th>
+                                <th class="py-3.5 px-4 text-right">Event Total (Rs.)</th>
+                                <th class="py-3.5 px-4">Proposed Mode of Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/10 text-xs sm:text-sm">
+                            <!-- 1. Unveiling -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">01</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Unveiling Ceremony
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Stationery</div>
+                                    <div>• Electronics Components</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹5,000/-</div>
+                                    <div>₹15,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹20,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">Vendor Payment / Cash
+                                    (Advance)</td>
+                            </tr>
+
+                            <!-- 2. Techno-Cultural -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">02</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Techno-Cultural Competition
+                                </td>
+                                <td class="py-4 px-4 text-slate-300">
+                                    • Prize Money (Winner and Runner-up)
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 font-mono">₹50,000/-</td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹50,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT / Cheque</td>
+                            </tr>
+
+                            <!-- 3. Robo Wars -->
+                            <tr class="hover:bg-white/5 transition-colors bg-yellow-400/5">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">03</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Robo Wars Event
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money</div>
+                                    <div>• Arena / Cage, Infrastructure Building & Renting</div>
+                                    <div>• Safety (Fire Extinguishers, Ambulance, Fire Brigade, First Aid)</div>
+                                    <div>• Remuneration for Judges</div>
+                                    <div>• Food / Refreshments for Participants</div>
+                                    <div>• Food / Refreshments for Judges</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹2,00,000/-</div>
+                                    <div>₹80,000/-</div>
+                                    <div>₹10,000/-</div>
+                                    <div>₹10,000/-</div>
+                                    <div>₹40,000/-</div>
+                                    <div>₹2,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-yellow-400 align-top">
+                                    ₹3,42,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 space-y-1 align-top">
+                                    <div>NEFT / Cheque</div>
+                                    <div>Vendor Payment / NEFT (Advance)</div>
+                                    <div>Cash / NEFT (Advance)</div>
+                                </td>
+                            </tr>
+
+                            <!-- 4. Robo Race -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">04</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Robo-Race
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Arena Building and Stationery</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹30,000/-</div>
+                                    <div>₹5,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹35,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment</td>
+                            </tr>
+
+                            <!-- 5. Robo Soccer -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">05</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Robo-Soccer
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Arena Building and Stationery</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹30,000/-</div>
+                                    <div>₹5,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹35,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment</td>
+                            </tr>
+
+                            <!-- 6. Robo Sumo -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">06</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Robo-Sumo
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Arena Building and Stationery</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹30,000/-</div>
+                                    <div>₹5,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹35,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment</td>
+                            </tr>
+
+                            <!-- 7. Line Follower Bot -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">07</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Line Follower Bot Competition
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Track Printing and Stationery</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹15,000/-</div>
+                                    <div>₹3,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹18,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment</td>
+                            </tr>
+
+                            <!-- 8. Ideathon -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">08</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Ideathon
+                                </td>
+                                <td class="py-4 px-4 text-slate-300">
+                                    • Prize Money (Winner and Runner-up)
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 font-mono">₹15,000/-</td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹15,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT / Cheque</td>
+                            </tr>
+
+                            <!-- 9. Hardware Hackathon -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">09</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Hardware Hackathon
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Food / Refreshments for Participants</div>
+                                    <div>• Food / Refreshments for Judges</div>
+                                    <div>• Remuneration for Judges</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹40,000/-</div>
+                                    <div>₹15,000/-</div>
+                                    <div>₹1,000/-</div>
+                                    <div>₹10,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹66,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment (Advance)</td>
+                            </tr>
+
+                            <!-- 10. Software Hackathon -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">10</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Software Hackathon (Code-a-thon)
+                                </td>
+                                <td class="py-4 px-4 text-slate-300 space-y-1">
+                                    <div>• Prize Money (Winner and Runner-up)</div>
+                                    <div>• Food / Refreshments for Participants</div>
+                                    <div>• Food / Refreshments for Judges</div>
+                                    <div>• Remuneration for Judges</div>
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 space-y-1 font-mono">
+                                    <div>₹70,000/-</div>
+                                    <div>₹30,000/-</div>
+                                    <div>₹2,000/-</div>
+                                    <div>₹15,000/-</div>
+                                </td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹1,17,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">NEFT/Cheque & Vendor
+                                    Payment (Advance)</td>
+                            </tr>
+
+                            <!-- 11. Miscellaneous -->
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 font-display font-bold text-yellow-400 align-top">11</td>
+                                <td class="py-4 px-4 font-semibold text-white align-top">
+                                    Miscellaneous & Workshops Support
+                                </td>
+                                <td class="py-4 px-4 text-slate-300">
+                                    • Miscellaneous Operational Reserve
+                                </td>
+                                <td class="py-4 px-4 text-right text-slate-300 font-mono">₹5,000/-</td>
+                                <td class="py-4 px-4 text-right font-display font-bold text-cyan-300 align-top">
+                                    ₹5,000/-</td>
+                                <td class="py-4 px-4 text-xs text-slate-300 align-top">Cash (Advance)</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr
+                                class="bg-gradient-to-r from-blue-950/90 via-slate-900 to-yellow-950/70 border-t-2 border-yellow-400/60">
+                                <td colspan="4"
+                                    class="py-4 px-4 font-display font-bold text-base sm:text-lg text-white">
+                                    GRAND TOTAL CUMULATIVE EXPENDITURE (Matches Total Income)
+                                </td>
+                                <td
+                                    class="py-4 px-4 text-right font-display font-black text-xl sm:text-2xl yellow-highlight-text">
+                                    ₹7,38,000/-
+                                </td>
+                                <td class="py-4 px-4 text-xs text-yellow-300 font-semibold">
+                                    100% Accounted
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: FORMAT-II CONSOLIDATED SUMMARY TABLE (Page 1 of PDF) -->
+            <div id="budget-tab-format2"
+                class="hidden liquid-glass rounded-3xl overflow-hidden border border-yellow-400/30">
+                <div
+                    class="p-6 border-b border-white/10 bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl font-bold text-white">Format – II:
+                            Consolidated Income & Expenditure Statement (Page 1)</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Grouped by primary accounting heads for
+                            Accounts Department & Director Sign-off</p>
+                    </div>
+                    <span
+                        class="text-xs px-3 py-1.5 rounded-lg bg-yellow-400/20 text-yellow-300 border border-yellow-400/40">Date:
+                        6th November 2026</span>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+                    <!-- Income Column -->
+                    <div class="lg:col-span-5 p-6 space-y-4">
+                        <h4 class="font-display text-sm uppercase tracking-wider text-yellow-400 font-bold">
+                            Proposed Income Statement</h4>
+                        <div class="space-y-3">
+                            <div
+                                class="p-4 rounded-2xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs text-slate-400">Sr. No. 1</div>
+                                    <div class="font-semibold text-white text-sm">From Institute Budget</div>
+                                </div>
+                                <div class="font-display font-bold text-lg text-cyan-300">₹4,73,500/-</div>
+                            </div>
+                            <div
+                                class="p-4 rounded-2xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs text-slate-400">Sr. No. 2</div>
+                                    <div class="font-semibold text-white text-sm">Registration for Participants
+                                        & Audience Passes</div>
+                                </div>
+                                <div class="font-display font-bold text-lg text-emerald-300">₹1,64,500/-</div>
+                            </div>
+                            <div
+                                class="p-4 rounded-2xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs text-slate-400">Sr. No. 3</div>
+                                    <div class="font-semibold text-white text-sm">Expected Amount Through
+                                        Sponsorship</div>
+                                </div>
+                                <div class="font-display font-bold text-lg text-yellow-300">₹1,00,000/-</div>
+                            </div>
+                        </div>
+                        <div
+                            class="p-4 rounded-2xl bg-yellow-400/15 border border-yellow-400/40 flex justify-between items-center">
+                            <span class="font-display font-bold text-white">Total Proposed Income</span>
+                            <span class="font-display font-black text-xl text-yellow-300">₹7,38,000/-</span>
+                        </div>
+                    </div>
+
+                    <!-- Expenditure Column -->
+                    <div class="lg:col-span-7 p-6 space-y-4">
+                        <h4 class="font-display text-sm uppercase tracking-wider text-cyan-400 font-bold">
+                            Consolidated Expenditure Heads</h4>
+                        <div class="space-y-3 text-xs sm:text-sm">
+                            <div
+                                class="p-3.5 rounded-xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-yellow-400 mr-2">1. Unveiling –
+                                        Installation</span>
+                                    <span class="text-slate-400 text-xs">(Backlit lettering & theme
+                                        installments)</span>
+                                </div>
+                                <span class="font-mono font-bold text-white">₹20,000/-</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-900/70 border border-white/10 space-y-2">
+                                <div class="flex justify-between items-center font-bold text-white">
+                                    <span class="text-yellow-400">2. Technical Council Events (Subtotal)</span>
+                                    <span class="font-mono text-yellow-300">₹5,88,000/-</span>
+                                </div>
+                                <div
+                                    class="grid grid-cols-3 gap-2 pt-1 text-xs text-slate-300 border-t border-white/10">
+                                    <div>Prize Money: <strong class="text-white">₹4,80,000/-</strong></div>
+                                    <div>Arena & Stationery: <strong class="text-white">₹98,000/-</strong></div>
+                                    <div>Safety & Fire Aid: <strong class="text-white">₹10,000/-</strong></div>
+                                </div>
+                            </div>
+                            <div
+                                class="p-3.5 rounded-xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-yellow-400 mr-2">3. Participants Food /
+                                        Refreshments</span>
+                                    <span class="text-slate-400 text-xs">(Vendor Payment NEFT Advance)</span>
+                                </div>
+                                <span class="font-mono font-bold text-white">₹85,000/-</span>
+                            </div>
+                            <div
+                                class="p-3.5 rounded-xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-yellow-400 mr-2">4. Judges (Remuneration ₹35,000
+                                        + Food ₹5,000)</span>
+                                </div>
+                                <span class="font-mono font-bold text-white">₹40,000/-</span>
+                            </div>
+                            <div
+                                class="p-3.5 rounded-xl bg-slate-900/70 border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <span class="font-bold text-yellow-400 mr-2">5. Miscellaneous</span>
+                                    <span class="text-slate-400 text-xs">(Cash Advance)</span>
+                                </div>
+                                <span class="font-mono font-bold text-white">₹5,000/-</span>
+                            </div>
+                        </div>
+                        <div
+                            class="p-4 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 flex justify-between items-center">
+                            <span class="font-display font-bold text-white">Total Consolidated
+                                Expenditure</span>
+                            <span class="font-display font-black text-xl text-white">₹7,38,000/-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: EXPECTED REVENUE STRUCTURE (Page 10 of PDF) -->
+            <div id="budget-tab-revenue"
+                class="hidden liquid-glass rounded-3xl overflow-hidden border border-yellow-400/30">
+                <div
+                    class="p-6 border-b border-white/10 bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-display text-lg sm:text-xl font-bold text-white">Detailed Distribution
+                            of Revenue Structure (Page 10)</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Participant team entry fees, audience passes,
+                            and sponsorship breakdown totaling ₹2,64,500/-</p>
+                    </div>
+                    <span class="px-4 py-2 rounded-xl bg-yellow-400/20 text-yellow-300 font-display text-xs font-bold">
+                        176 Competing Teams + 70 Audience Passes
+                    </span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="border-b border-white/10 text-[11px] uppercase tracking-wider text-slate-400 bg-slate-950/60">
+                                <th class="py-3.5 px-5">Sr. No.</th>
+                                <th class="py-3.5 px-5">Event / Revenue Source</th>
+                                <th class="py-3.5 px-5 text-right">Entry Fee (Per Team/Pass)</th>
+                                <th class="py-3.5 px-5 text-right">Expected Participation</th>
+                                <th class="py-3.5 px-5 text-right">Calculation</th>
+                                <th class="py-3.5 px-5 text-right">Expected Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/10 text-xs sm:text-sm">
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">01</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Robo Race</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹500</td>
+                                <td class="py-3.5 px-5 text-right">20 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">500 × 20</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹10,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">02</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Robo Soccer</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹500</td>
+                                <td class="py-3.5 px-5 text-right">20 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">500 × 20</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹10,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">03</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Robo Sumo</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹500</td>
+                                <td class="py-3.5 px-5 text-right">20 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">500 × 20</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹10,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">04</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Ideathon</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹200</td>
+                                <td class="py-3.5 px-5 text-right">15 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">200 × 15</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹3,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">05</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Line Follower Bot Competition
+                                </td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹300</td>
+                                <td class="py-3.5 px-5 text-right">15 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">300 × 15</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹4,500/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">06</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Hardware Hackathon</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹600</td>
+                                <td class="py-3.5 px-5 text-right">20 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">600 × 20</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹12,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">07</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Software Hackathon
+                                    (Code-a-thon)</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹800</td>
+                                <td class="py-3.5 px-5 text-right">50 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">800 × 50</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹40,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">08</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Robo Wars</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹2,500</td>
+                                <td class="py-3.5 px-5 text-right">16 Teams</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">2500 × 16</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-emerald-300">
+                                    ₹40,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 bg-cyan-500/5">
+                                <td class="py-3.5 px-5 text-cyan-400 font-bold">09</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Audience Passes</td>
+                                <td class="py-3.5 px-5 text-right font-mono">₹500</td>
+                                <td class="py-3.5 px-5 text-right">70 Passes</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400">500 × 70</td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-cyan-300">
+                                    ₹35,000/-</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 bg-yellow-400/5">
+                                <td class="py-3.5 px-5 text-yellow-400 font-bold">10</td>
+                                <td class="py-3.5 px-5 font-semibold text-white">Corporate & Event Sponsorship
+                                </td>
+                                <td class="py-3.5 px-5 text-right font-mono">—</td>
+                                <td class="py-3.5 px-5 text-right">Sponsors</td>
+                                <td class="py-3.5 px-5 text-right font-mono text-slate-400"></td>
+                                <td class="py-3.5 px-5 text-right font-display font-bold text-yellow-300">
+                                    ₹1,00,000/-</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-slate-900 border-t-2 border-yellow-400/50">
+                                <td colspan="5" class="py-4 px-5 font-display font-bold text-base text-white">
+                                    GRAND TOTAL SELF-GENERATED REVENUE (Registrations ₹1,64,500 + Sponsorship
+                                    ₹1,00,000)</td>
+                                <td class="py-4 px-5 text-right font-display font-black text-xl yellow-highlight-text">
+                                    ₹2,64,500/-</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- PAGE 4: 6 CORE STRATEGIC OUTCOMES & INSTITUTIONAL VALUE               -->
+    <!-- ===================================================================== -->
+    <section id="page-4" class="relative min-h-screen py-24 px-4 sm:px-8 flex flex-col justify-center">
+        <div class="max-w-7xl mx-auto w-full space-y-10">
+
+            <!-- Section Header -->
+            <div class="space-y-3">
+                <div
+                    class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full neon-yellow-pill text-xs font-semibold text-yellow-300 uppercase tracking-widest">
+                    <i class="fa-solid fa-star text-yellow-400"></i>
+                    Technical Council 2026-27 • Key Deliverables
+                </div>
+                <h2 class="font-display text-2xl sm:text-4xl font-bold text-white">
+                    Event Outcomes & <span class="yellow-highlight-text">Institutional Value</span>
+                </h2>
+            </div>
+
+            <!-- 6 Elaborated Strategic Outcome Pillars (Exact 1-to-6 Order from Technical Council) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Outcome 1: 6-Month Campus Deployment -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-yellow-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(250,204,21,0.25)]">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 font-display text-xs font-bold">
+                                Outcome #01
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            6-Month Campus Deployment
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Selected Hardware / Software Hackathon and Techno-Cultural prototypes addressing VIT
+                            operational, venue-booking, network firewall, and smart podium needs are targeted
+                            for real campus deployment within 6 months.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Outcome 2: Product Visibility -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-cyan-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+                                <i class="fa-solid fa-eye"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 font-display text-xs font-bold">
+                                Outcome #02
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            Product Visibility
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Provides a high-profile exhibition platform across the Plaza Area andVIT Campus
+                            where student-built hardware prototypes, cultural-tech installations, and software
+                            products gain live visibility before industry judges, sponsors, faculty, and
+                            inter-collegiate visitors—opening doors for patenting, institutional branding, and
+                            startup commercialisation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Outcome 3: Space & UAV Research -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-blue-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-400/40 text-blue-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/40 text-blue-300 font-display text-xs font-bold">
+                                Outcome #03
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            Space & UAV Research
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Hands-on workshops on ESP32/MPU6050 PID Drone Flight Controllers, OpenCV Computer
+                            Vision, CubeSat subsystems, and World Radio Day directly seed student research &
+                            startup incubation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Outcome 4: First-Year Involvement -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-emerald-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(16,185,129,0.25)]">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-display text-xs font-bold">
+                                Outcome #04
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            First-Year Involvement
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Actively integrates First-Year (FE) engineering students into core technical culture
+                            right from their initial semester through beginner-friendly workshops, intra-college
+                            Line Follower Bot challenges, and Ideathon teams—building early hands-on confidence
+                            in coding, sensors, and circuit building.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Outcome 5: Identifying and Nurturing Students -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-yellow-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(250,204,21,0.25)]">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 font-display text-xs font-bold">
+                                Outcome #05
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            Identifying & Nurturing Talent to Represent VIT
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Identifying and nurturing students from our college to participate in different
+                            technical events to represent our college. High-performing teams from intra-college
+                            and flagship competitions are mentored further by the Technical Council to represent
+                            VIT at IIT/NIT techfests, Smart India Hackathon (SIH), and national robotics
+                            championships.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Outcome 6: Placement and Internship Opportunities -->
+                <div
+                    class="liquid-glass-interactive rounded-2xl p-6 sm:p-7 border-t-4 border-t-purple-400 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-300 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(168,85,247,0.25)]">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full bg-purple-500/15 border border-purple-400/40 text-purple-300 font-display text-xs font-bold">
+                                Outcome #06
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white">
+                            Placement & Internship Opportunities
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                            Connects standout coders, hardware builders, and problem-solvers directly with
+                            industry jury members, corporate sponsors, and tech leads evaluating the Hackathons
+                            and exhibitions—creating strong portfolios and direct pathways for technical
+                            internships, pre-placement offers (PPOs), and core engineering placements.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SPLIT-SCREEN LIQUID GLASS EVENT POP-UP MODAL                          -->
+    <!-- Left Side: Event Name, Description, Budget, Schedule & Outcomes       -->
+    <!-- Right Side: Event Photo + Instant Custom Photo Uploader for Desktop   -->
+    <!-- ===================================================================== -->
+    <div id="event-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+        <div
+            class="liquid-modal rounded-3xl max-w-6xl w-full max-h-[92vh] overflow-hidden flex flex-col animate-[fadeIn_0.25s_ease-out]">
+
+            <!-- Modal Top Bar -->
+            <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
+                <div class="flex items-center gap-3">
+                    <span id="modal-date-badge"
+                        class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 font-display text-xs font-bold">
+                        20th January 2027
+                    </span>
+                    <span id="modal-venue-badge" class="text-xs text-slate-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-yellow-400"></i>
+                        <span id="modal-venue-text">VIT Campus</span>
+                    </span>
+                </div>
+                <button onclick="closeEventModal()"
+                    class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-500/20 hover:text-red-300 text-slate-300 flex items-center justify-center transition-all"
+                    title="Close (Esc)">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Split Content: Left (Details & Budget) | Right (Event Photo & Custom Uploader) -->
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+
+                <!-- LEFT SIDE (7 Cols): Event Name, Description, Budget Breakdown, Timeline, Gaganyaan Integration -->
+                <div class="lg:col-span-7 p-6 sm:p-8 space-y-6 overflow-y-auto">
+                    <div>
+                        <div id="modal-category"
+                            class="text-xs font-bold uppercase tracking-widest text-yellow-400 mb-1">Flagship
+                            Event</div>
+                        <h3 id="modal-title" class="font-display text-2xl sm:text-3xl font-extrabold text-white">Event
+                            Title</h3>
+                        <p id="modal-timing" class="text-xs text-cyan-300 mt-1 font-medium"></p>
+                    </div>
+
+                    <!-- Event Description -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-display uppercase tracking-wider text-slate-400">Event
+                            Description</h4>
+                        <p id="modal-description" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Budget & Revenue Box on Left Side -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-yellow-400/10 border border-yellow-400/35 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-[11px] font-display uppercase tracking-wider text-yellow-300">Allocated
+                                    Event Budget</span>
+                                <i class="fa-solid fa-coins text-yellow-400"></i>
+                            </div>
+                            <div id="modal-budget-total" class="font-display text-xl sm:text-2xl font-black text-white">
+                                ₹20,000/-</div>
+                            <ul id="modal-budget-items"
+                                class="text-xs text-slate-300 space-y-1 pt-1 border-t border-white/10"></ul>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-display uppercase tracking-wider text-cyan-300">Expected
+                                    Participation & Fee</span>
+                                <i class="fa-solid fa-users text-cyan-400"></i>
+                            </div>
+                            <div id="modal-revenue-total"
+                                class="font-display text-xl sm:text-2xl font-black text-white">Open to All</div>
+                            <div id="modal-revenue-details"
+                                class="text-xs text-slate-300 pt-1 border-t border-white/10"></div>
+                        </div>
+                    </div>
+
+                    <!-- Gaganyaan Theme Integration & Outcome -->
+                    <div class="space-y-3">
+                        <div id="modal-theme-box"
+                            class="p-4 rounded-2xl bg-blue-500/10 border border-blue-400/30 space-y-1">
+                            <div
+                                class="text-xs font-display font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shuttle-space text-yellow-400"></i> Gaganyaan Mission
+                                Integration
+                            </div>
+                            <p id="modal-theme-text" class="text-xs text-slate-200 leading-relaxed"></p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-yellow-400/10 border border-yellow-400/35 space-y-1">
+                            <div
+                                class="text-xs font-display font-bold uppercase tracking-wider text-yellow-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-award text-yellow-400"></i> Expected Outcome
+                            </div>
+                            <p id="modal-outcome-text" class="text-xs text-slate-200 leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Extra Content (Detailed Hourly Schedule / Problem Statements / Double-Elimination Bracket) -->
+                    <div id="modal-extra-container" class="space-y-3"></div>
+                </div>
+
+                <!-- RIGHT SIDE (5 Cols): Event Photo Display + Easy Local Photo Replacement -->
+                <div class="lg:col-span-5 p-6 sm:p-8 bg-slate-950/40 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-display uppercase tracking-wider text-yellow-400 font-semibold">
+                                <i class="fa-solid fa-camera-retro mr-1.5"></i> Event Visual Preview
+                            </span>
+                            <span class="text-[11px] text-slate-400">Right-Pane Showcase</span>
+                        </div>
+
+                        <!-- Main Photo Container -->
+                        <div
+                            class="relative group rounded-2xl overflow-hidden border border-yellow-400/40 bg-slate-900 aspect-[4/3] shadow-2xl">
+                            <img id="modal-image" src="" alt="Event Preview"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-70">
+                            </div>
+                            <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                                <div>
+                                    <span id="modal-img-caption"
+                                        class="text-xs font-display font-bold text-white drop-shadow">Event
+                                        Concept Visual</span>
+                                    <p class="text-[10px] text-yellow-300">Replaceable via Upload Button or
+                                        `photos/` folder</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instant Custom Photo Uploader -->
+                        <div class="p-4 rounded-2xl liquid-glass space-y-3 border border-yellow-400/25">
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs font-semibold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-cloud-arrow-up text-yellow-400"></i>
+                                    <span>Add / Replace Event Photo</span>
+                                </div>
+                                <span id="photo-save-status"
+                                    class="text-[10px] px-2 py-0.5 rounded bg-yellow-400/20 text-yellow-300">Auto-Saves
+                                    in Chrome</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed">
+                                Choose a photo from your computer below (it will <strong class="text-white">stay
+                                    saved automatically in Chrome</strong>), or place your photos inside a <code
+                                    class="text-yellow-300 bg-slate-950 px-1.5 py-0.5 rounded">photos/</code>
+                                folder on your Desktop.
+                            </p>
+                            <div class="flex gap-2">
+                                <label
+                                    class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-yellow-400/25 to-blue-500/25 hover:from-yellow-400/40 hover:to-blue-500/40 border border-yellow-400/50 text-yellow-200 text-xs font-semibold cursor-pointer transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span>Select Photo from PC</span>
+                                    <input type="file" id="custom-photo-input" accept="image/*" class="hidden"
+                                        onchange="handleCustomPhotoUpload(event)">
+                                </label>
+                                <button onclick="resetCurrentEventPhoto()"
+                                    class="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-400/40 text-slate-300 hover:text-red-300 text-xs transition-all"
+                                    title="Reset to Default Photo">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation between Timeline Events inside Modal -->
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+                        <button onclick="navigateModal(-1)"
+                            class="flex-1 py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-yellow-400/30 text-xs font-medium text-slate-200 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-left text-yellow-400"></i> Previous Event
+                        </button>
+                        <button onclick="navigateModal(1)"
+                            class="flex-1 py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-yellow-400/30 text-xs font-medium text-slate-200 transition-all flex items-center justify-center gap-2">
+                            Next Event <i class="fa-solid fa-arrow-right text-yellow-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT: DATA REPOSITORY, TIMELINE, MODAL & 3D GALAXY ENGINE       -->
+    <!-- ===================================================================== -->
+    <script>
+        /* ============================================================================
+         * HOW TO ADD YOUR OWN PHOTOS & LOGO:
+         * 1. Put `logo.png` inside `C:\Users\adity\Desktop\photos\logo.png` OR click the
+         *    top-left logo icon directly in Chrome to select your Algorhythm logo image!
+         * 2. For event photos, click any event card and use "Select Photo from PC"
+         *    or put images in `C:\Users\adity\Desktop\photos\`.
+         * ============================================================================ */
+        const EVENT_PHOTOS = {
+            'unveiling': 'photos/unveiling.jpg',
+            'ideathon': 'photos/ideathon.jpg',
+            'drone-workshop': 'photos/drone.jpg',
+            'techno-cultural': 'photos/techno-cultural.jpg',
+            'software-hackathon': 'photos/software-hackathon.jpg',
+            'hardware-hackathon': 'photos/hardware-hackathon.jpg',
+            'line-follower': 'photos/line-follower.jpg',
+            'robo-trio': 'photos/robo-trio.jpg',
+            'robo-race': 'photos/robo-race.jpg',
+            'robo-soccer': 'photos/robo-soccer.jpg',
+            'robo-sumo': 'photos/robo-sumo.jpg',
+            'robo-wars': 'photos/robo-wars.jpg',
+            'opencv-workshop': 'photos/opencv.jpg',
+            'cubesat-workshop': 'photos/cubesat.jpg',
+            'radio-day': 'photos/radio-day.jpg'
+        };
+
+        const DEFAULT_FALLBACK_PHOTOS = {
+            'unveiling': 'https://images.unsplash.com/photo-1517976487468-f20514c44f53?auto=format&fit=crop&w=1000&q=80',
+            'ideathon': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80',
+            'drone-workshop': 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1000&q=80',
+            'techno-cultural': 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80',
+            'software-hackathon': 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80',
+            'hardware-hackathon': 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
+            'line-follower': 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
+            'robo-trio': 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&w=1000&q=80',
+            'robo-race': 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1000&q=80',
+            'robo-soccer': 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=1000&q=80',
+            'robo-sumo': 'https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&w=1000&q=80',
+            'robo-wars': 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1000&q=80',
+            'opencv-workshop': 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1000&q=80',
+            'cubesat-workshop': 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1000&q=80',
+            'radio-day': 'https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?auto=format&fit=crop&w=1000&q=80'
+        };
+
+        // Custom Top-Left Logo Uploader & Persistence
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                const logoImg = document.getElementById('navbar-algo-logo');
+                const fallbackSvg = document.getElementById('navbar-algo-svg-fallback');
+                logoImg.src = dataUrl;
+                logoImg.classList.remove('hidden');
+                fallbackSvg.classList.add('hidden');
+                try {
+                    localStorage.setItem('algorhythm_custom_logo', dataUrl);
+                } catch (err) {
+                    console.warn('Logo kept in session memory.');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadSavedLogo() {
+            const savedLogo = localStorage.getItem('algorhythm_custom_logo');
+            if (savedLogo) {
+                const logoImg = document.getElementById('navbar-algo-logo');
+                const fallbackSvg = document.getElementById('navbar-algo-svg-fallback');
+                logoImg.src = savedLogo;
+                logoImg.classList.remove('hidden');
+                fallbackSvg.classList.add('hidden');
+            }
+        }
+
+        /* ============================================================================
+         * 1. COMPLETE PDF EVENT DATA REPOSITORY
+         * ============================================================================ */
+        const EVENTS_DATA = [
+            {
+                id: 'unveiling',
+                row: 1,
+                dateBadge: '20th Jan',
+                fullDate: '20th January 2027',
+                title: 'Unveiling',
+                category: 'Grand Festival Launch',
+                icon: 'fa-rocket',
+                timing: 'Official Inauguration Ceremony',
+                venue: 'VIT Campus',
+                shortDesc: 'The grand launch of Algorhythm 2027, officially introducing the fest, its Gaganyaan theme, vision, and upcoming events.',
+                fullDesc: 'The grand launch of Algorhythm 2027, officially introducing the Annual Technical Festival, its ISRO Gaganyaan Human Spaceflight theme, vision, and the complete lineup of upcoming competitions and technical workshops across the VIT Campus.',
+                budgetTotal: '₹20,000/-',
+                budgetItems: [
+                    'Stationery: ₹5,000/- (Vendor Payment / Cash Advance)',
+                    'Electronics Components & Backlit Lettering: ₹15,000/-'
+                ],
+                revenueTotal: 'Campus-Wide Entry',
+                revenueDetails: 'Funded under Institute Unveiling & Installation Head',
+                themeIntegration: 'Features backlit space-mission lettering and Gaganyaan orbital launch theme installations across the campus.',
+                outcome: 'Creates campus-wide momentum, visual identity, and inter-institutional awareness for Algorhythm 2027.',
+                photoUrl: 'https://images.unsplash.com/photo-1517976487468-f20514c44f53?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'ideathon',
+                row: 1,
+                dateBadge: '25th Jan',
+                fullDate: '25th January 2027',
+                title: 'Ideathon',
+                category: 'Sustainability & Campus Betterment',
+                icon: 'fa-lightbulb',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Room M101, VIT',
+                shortDesc: 'A creative problem-solving competition for innovative and sustainable solutions for campus development.',
+                fullDesc: 'The Ideathon provides participants with a platform to identify real-world challenges related to college requirements and sustainability and develop innovative, technology-driven solutions. Participants work on problem statements focused on improving campus facilities, academic and administrative processes, resource management, waste reduction, energy efficiency, and sustainable practices.',
+                budgetTotal: '₹15,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹15,000/- (NEFT/Cheque)'
+                ],
+                revenueTotal: '₹3,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹200/team × 15 Expected Teams = ₹3,000/-',
+                themeIntegration: 'Focuses on closed-loop resource management, energy efficiency, and sustainable life-support systems inspired by spacecraft habitats.',
+                outcome: 'Helps the institute identify promising solutions addressing actual campus requirements. Selected ideas move forward to prototype creation, incubation support, research initiatives, and startup commercialisation.',
+                photoUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'drone-workshop',
+                row: 1,
+                dateBadge: '27th Jan',
+                fullDate: '27th January 2027',
+                title: 'Workshop – Brain of Drone',
+                category: 'Flight Controllers & Embedded PID Workshop',
+                icon: 'fa-helicopter',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Lab 12, VIT',
+                shortDesc: 'An interactive workshop on drone technology with live demos, component breakdown, and working principles.',
+                fullDesc: 'Provides participants with a practical understanding of drone flight controllers through hardware assembly, component breakdown, and live demonstrations. Explores the functioning of the ESP32 microcontroller, MPU6050 sensor, ESCs, and BLDC motors, explaining how sensor data is processed to maintain flight stability. Introduces sensor fusion, Complementary Filters, and PID control algorithms using a custom-built 3D-printed one-axis drone balancing rig.',
+                budgetTotal: 'Lab Supported',
+                budgetItems: [],
+                revenueTotal: 'Skill Development',
+                revenueDetails: 'Hands-on embedded systems & flight controller training',
+                themeIntegration: 'Demonstrates attitude stabilization, inertial measurement (MPU6050), and real-time PID control critical for atmospheric re-entry and autonomous space landers.',
+                outcome: 'Provides practical exposure to embedded systems, sensor interfacing, I2C communication, and PID control systems—establishing a foundation for UAV aerial monitoring, PCB design, and autonomous robotics.',
+                photoUrl: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'techno-cultural',
+                row: 1,
+                dateBadge: '29th Jan',
+                fullDate: '3rd Dec 2026 – 29th Jan 2027',
+                title: 'Techno-Cultural Competition',
+                category: 'Heritage Meets Emerging Tech',
+                icon: 'fa-masks-theater',
+                timing: 'Final Exhibition: 29th Jan (4:00 PM to 6:00 PM)',
+                venue: 'Plaza Area, Vidyalankar Institute of Technology',
+                shortDesc: 'A fusion of technology and creativity showcasing technical knowledge, artistic abilities, and cultural talents.',
+                fullDesc: 'Brings together technology and Indian cultural heritage through innovative applications of robotics, AI, AR/VR, IoT, and computer vision. All participating teams showcase their completed projects through a physical exhibition in the Plaza Area judged on innovation, functionality, technical implementation, and creativity.',
+                budgetTotal: '₹50,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹50,000/- (NEFT/Cheque)'
+                ],
+                revenueTotal: 'Institutional Showcase',
+                revenueDetails: 'Multi-week development culminating and Plaza Exhibition',
+                themeIntegration: 'Harmonizes India’s timeless cultural heritage with futuristic indigenous engineering.',
+                outcome: 'Helps the institute build a permanent collection of technology-driven cultural projects and interactive demonstrations for exhibitions, outreach programmes, and digital platforms.',
+                photoUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80',
+                schedule: [
+                    { time: '4 Jan – 8 Jan 2027', title: 'First Review Round', desc: 'Presentation of initial concepts, proposed designs, and feasibility evaluation.' },
+                    { time: '16 Jan – 22 Jan 2027', title: 'Second Review Round', desc: 'Assessment of updated projects, technical implementation, and functionality.' },
+                    { time: '29 Jan 2027 (4–6 PM)', title: 'Final Exhibition & Jury Evaluation (Plaza Area)', desc: 'Physical exhibition and live jury evaluation of completed projects.' }
+                ],
+                problemStatements: [
+                    '1. Automated Rangoli Pattern-Making Contraption',
+                    '2. Interactive LED-Illuminated Digital Painting Studio (Computational colour reversal + sound-reactive LED grid)',
+                    '3. Manache Shlok Interactive App (Gamified memorization, audio recitals & digital pedagogy)',
+                    '4. Cultural Heritage Hologram Display System (Volumetric 3D heritage artifacts)',
+                    '5. AR Heritage Walk Companion (Geolocation-based historical reconstruction overlays)',
+                    '6. Smart Digital Podium System (Raspberry Pi-based integrated classroom presentation podium)',
+                    '7. Network Security & Firewall Implementation (Enterprise-grade IPS & SSL/TLS inspection for VIT Wi-Fi)',
+                    '8. Smart Venue Booking System (Real-time conflict-free dashboard for classrooms, labs & auditoriums)'
+                ]
+            },
+            {
+                id: 'software-hackathon',
+                row: 1,
+                dateBadge: '30th Jan',
+                fullDate: '30th January 2027',
+                title: 'Software Hackathon (Code-a-thon)',
+                category: '12-Hour Competitive Coding Sprint',
+                icon: 'fa-code',
+                timing: '8:00 AM to 8:00 PM',
+                venue: 'Labs M101, M413, M5, B105',
+                shortDesc: 'A competitive coding event where teams develop innovative software solutions to real-world problems in a limited time.',
+                fullDesc: 'Challenges participants to develop software-based solutions for predefined problem statements using programming, web technologies, mobile application development, artificial intelligence, machine learning, and data analytics within an intensive 12-hour timeframe.',
+                budgetTotal: '₹1,17,000/-',
+                budgetItems: [
+                    'Prize Money (Winner & Runner-up): ₹70,000/- (NEFT/Cheque)',
+                    'Food / Refreshments for Participants: ₹30,000/-',
+                    'Food / Refreshments for Judges: ₹2,000/-',
+                    'Remuneration for Judges: ₹15,000/-'
+                ],
+                revenueTotal: '₹40,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹800/team × 50 Expected Teams = ₹40,000/-',
+                themeIntegration: 'Problem statements are inspired by space mission operations, including mission monitoring, telemetry data processing, resource management, simulation, communication, and AI-assisted decision-making.',
+                outcome: 'Enables the institute to identify and deploy software solutions for operational, academic, and administrative needs, while incubating market-ready startup ventures.',
+                photoUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=80',
+                schedule: [
+                    { time: '8:00 AM – 8:30 AM', title: 'Registration & Identification', desc: 'Team registration and distribution of ID bands.' },
+                    { time: '8:30 AM – 12:30 PM', title: 'Prototype Development', desc: 'Coding, implementation, and core prototype building.' },
+                    { time: '12:30 PM – 1:00 PM', title: 'Mentorship Round', desc: 'Mentors provide technical guidance and architecture feedback.' },
+                    { time: '1:00 PM – 2:00 PM', title: 'Lunch Break', desc: 'Refreshments for participants, mentors, and organizing team.' },
+                    { time: '2:00 PM – 3:00 PM', title: 'Continued Development', desc: 'Preparation for first evaluation.' },
+                    { time: '3:00 PM – 5:00 PM', title: 'First Evaluation', desc: 'Assessment of functionality, innovation, and relevance.' },
+                    { time: '5:00 PM – 6:00 PM', title: 'Shortlist & Final Refinement', desc: 'Shortlisted teams refine prototypes and PPTs.' },
+                    { time: '6:00 PM – 7:30 PM', title: 'Final Jury Presentation', desc: 'Live demonstration before the jury panel.' },
+                    { time: '7:30 PM – 8:00 PM', title: 'Winner Announcement & Prize Distribution', desc: 'Award cheques and official wrap-up.' }
+                ]
+            },
+            {
+                id: 'hardware-hackathon',
+                row: 1,
+                dateBadge: '31st Jan',
+                fullDate: '31st January 2027',
+                title: 'Hardware Hackathon',
+                category: 'Embedded Systems & Prototyping Challenge',
+                icon: 'fa-microchip',
+                timing: '7:30 AM to 6:30 PM',
+                venue: 'VIT Campus (TBD)',
+                shortDesc: 'A hands-on innovation challenge to design, build, and prototype hardware-based solutions to given problem statements.',
+                fullDesc: 'Challenges participants to develop functional hardware-based solutions using electronics, embedded systems, sensors, microcontrollers, and IoT technologies. Teams design circuits, integrate hardware, and test working physical prototypes within a single day.',
+                budgetTotal: '₹66,000/-',
+                budgetItems: [
+                    'Prize Money (Winner & Runner-up): ₹40,000/- (NEFT/Cheque)',
+                    'Food / Refreshments for Participants: ₹15,000/-',
+                    'Food / Refreshments for Judges: ₹1,000/-',
+                    'Remuneration for Judges: ₹10,000/-'
+                ],
+                revenueTotal: '₹12,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹600/team × 20 Expected Teams = ₹12,000/-',
+                themeIntegration: 'Problem statements are inspired by space mission hardware: telemetry, environmental sensing, automation, power management, and reliable spacecraft communication.',
+                outcome: 'Provides functional hardware prototypes addressing actual campus requirements, with selected solutions slated for implementation within VIT within 6 months.',
+                photoUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
+                schedule: [
+                    { time: '7:30 AM – 8:00 AM', title: 'Reporting & Registration', desc: 'Team check-in and ID band distribution.' },
+                    { time: '8:00 AM – 1:00 PM', title: 'Prototype Development', desc: 'Circuit design, hardware integration, and sensor interfacing.' },
+                    { time: '1:00 PM – 1:45 PM', title: 'Lunch Break', desc: 'Break for participants, mentors, and organizers.' },
+                    { time: '1:45 PM – 3:00 PM', title: 'Testing & Debugging', desc: 'Hardware refinement and calibration.' },
+                    { time: '3:00 PM – 4:00 PM', title: 'First Evaluation', desc: 'Technical inspection of working prototypes.' },
+                    { time: '4:30 PM – 5:00 PM', title: 'Shortlist & Final Prep', desc: 'Shortlisted teams prepare final hardware demos.' },
+                    { time: '5:00 PM – 6:00 PM', title: 'Final Jury Presentation', desc: 'Live prototype demonstration before judges.' },
+                    { time: '6:00 PM – 6:30 PM', title: 'Prize Distribution', desc: 'Award ceremony and event wrap-up.' }
+                ]
+            },
+
+            /* ROW 2: Displayed Right-to-Left (3rd Feb on Right -> 12th Feb on Left) to match the PDF snake track */
+            {
+                id: 'radio-day',
+                row: 2,
+                dateBadge: '12th Feb',
+                fullDate: '12th February 2027',
+                title: 'World Radio Day Celebration',
+                category: 'Satellite & Microwave Tech Exhibition',
+                icon: 'fa-tower-broadcast',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Gate 2, VIT',
+                shortDesc: 'A celebration of World Radio Day highlighting the evolution, importance, and applications of radio communication.',
+                fullDesc: 'An interactive technical exhibition celebrating World Radio Day, showcasing satellite models, radio communication systems, and microwave technologies. Features prototypes developed during the Cube Satellite Workshop, informative space infographics, and live RF demonstrations.',
+                budgetTotal: 'Exhibition Support',
+                budgetItems: [
+                    'Supported under Technical Council & Miscellaneous Reserve (₹5,000/-)'
+                ],
+                revenueTotal: 'Open Campus Exhibition',
+                revenueDetails: 'Interactive live demonstrations for all students & faculty',
+                themeIntegration: 'Highlights deep-space RF telemetry, ground-station tracking, and microwave links essential for Gaganyaan crew communication.',
+                outcome: 'Enhances students’ understanding of satellite technology, radio communication, and microwave systems through visual learning and live testing.',
+                photoUrl: 'https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'cubesat-workshop',
+                row: 2,
+                dateBadge: '10th Feb',
+                fullDate: '10th February 2027',
+                title: 'Workshop – Cube Satellite',
+                category: 'Small Satellite Architecture Workshop',
+                icon: 'fa-satellite',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Lab 12, VIT',
+                shortDesc: 'An interactive technical workshop introducing CubeSat technology, satellite architecture, subsystems, and development.',
+                fullDesc: 'Introduces participants to the fundamentals of small satellite systems and their engineering design. Covers satellite subsystems, telemetry communication, solar power management, onboard computing, attitude sensors, and payload integration.',
+                budgetTotal: 'Lab Supported',
+                budgetItems: [],
+                revenueTotal: 'Space-Tech Training',
+                revenueDetails: 'Prototypes showcased at World Radio Day on 12th Feb',
+                themeIntegration: 'Directly aligns with ISRO’s small-satellite ecosystem and student payload development.',
+                outcome: 'Provides a foundation for future CubeSat and satellite-system development initiatives at VIT, encouraging interdisciplinary aerospace research.',
+                photoUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'opencv-workshop',
+                row: 2,
+                dateBadge: '8th Feb',
+                fullDate: '8th February 2027',
+                title: 'Workshop – Image Processing with OpenCV',
+                category: 'Computer Vision & AI Workshop',
+                icon: 'fa-eye',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Lab 6, VIT',
+                shortDesc: 'A practical workshop on computer vision and image processing techniques using Python and OpenCV.',
+                fullDesc: 'Introduces participants to image processing and computer vision using Python and the OpenCV library. Covers fundamental image manipulation, filtering, object detection basics, feature extraction, and real-world robotics vision integration.',
+                budgetTotal: 'Lab Supported',
+                budgetItems: [],
+                revenueTotal: 'AI / Vision Upskilling',
+                revenueDetails: 'Hands-on Python & OpenCV coding session',
+                themeIntegration: 'Empowers autonomous rover hazard detection, docking alignment, and satellite earth-observation analytics.',
+                outcome: 'Supports computer vision projects across VIT including intelligent surveillance, automated inspection, object tracking, and autonomous robotics.',
+                photoUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'robo-wars',
+                row: 2,
+                dateBadge: '6th Feb',
+                fullDate: '6th February 2027',
+                title: 'Robo Wars',
+                category: 'Flagship Combat Robotics Championship',
+                icon: 'fa-screwdriver-wrench',
+                timing: '8:00 AM to 8:00 PM',
+                venue: 'Ground 2, VIT',
+                shortDesc: 'An intense robotic combat competition where participants battle their engineered robots in a controlled arena.',
+                fullDesc: 'Robo Wars is the flagship combat robotics spectacle of Algorhythm 2027 in which 16 teams design and operate heavy-duty armoured robots to compete in a fortified arena. Focuses on mechanical strength, structural design, drive systems, weapon durability, and precision remote control.',
+                budgetTotal: '₹3,42,000/-',
+                budgetItems: [
+                    'Prize Money: ₹2,00,000/- (NEFT/Cheque)',
+                    'Arena/Cage & Infrastructure Renting: ₹80,000/-',
+                    'Safety (Fire Extinguishers, Ambulance, Fire Brigade, First Aid): ₹10,000/-',
+                    'Remuneration for Judges: ₹10,000/-',
+                    'Food/Refreshments for Participants: ₹40,000/-',
+                    'Food/Refreshments for Judges: ₹2,000/-'
+                ],
+                revenueTotal: '₹75,000/- Combined',
+                revenueDetails: 'Team Entry: ₹2,500 × 16 Teams (₹40,000) + Audience Passes: ₹500 × 70 (₹35,000)',
+                themeIntegration: 'The arena is designed as a futuristic space simulation zone featuring spacecraft structures, mission-control elements, and planetary surroundings.',
+                outcome: 'Contributes to advanced mechanical and robotic prototypes, chassis design, and high-torque drive systems. Selected bots are maintained as institute demonstration models.',
+                photoUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1000&q=80',
+                hasBracket: true,
+                schedule: [
+                    { time: '11:00 AM – 1:00 PM', title: 'Opening Rounds', desc: 'High-energy opening ceremony, bot unveilings, and first 6 Winner’s Bracket matches.' },
+                    { time: '1:00 PM – 2:00 PM', title: 'Lunch & Pit-Stop Repairs', desc: 'Break and essential robot maintenance in the pit area.' },
+                    { time: '2:00 PM – 4:00 PM', title: 'Mid-Rounds & Eliminations', desc: 'Remaining opening matches, WB Quarterfinals, and Loser’s Bracket Round 1.' },
+                    { time: '4:00 PM – 6:00 PM', title: 'Survival Rounds', desc: 'Intense Loser’s Bracket survival clashes and Winner’s Bracket Semifinals.' },
+                    { time: '6:00 PM – 7:30 PM', title: 'Prime Time Finals', desc: 'Semifinal and Grand Final championship matches under floodlights.' },
+                    { time: '7:30 PM – 8:00 PM', title: 'Prize Distribution', desc: '₹2,00,000 prize distribution and sponsor acknowledgements.' }
+                ]
+            },
+            {
+                id: 'robo-trio',
+                row: 2,
+                dateBadge: '5th Feb',
+                fullDate: '5th February 2027',
+                title: 'Robo Race, Robo Soccer, Robo Sumo',
+                category: 'Triple Robotics Championship Day',
+                icon: 'fa-robot',
+                timing: '3:00 PM to 7:00 PM',
+                venue: 'Ground 2 & Gate 2, VIT',
+                shortDesc: 'A series of robotics competitions testing robot speed, precision, agility, control, and strategic capabilities.',
+                fullDesc: 'Three simultaneous robotics competitions testing every dimension of mobile robotics: (1) Robo Race on Ground 2 testing obstacle navigation & speed, (2) Robo Soccer at Gate 2 testing multi-robot coordination & ball control, and (3) Robo Sumo at Gate 2 testing traction, weight distribution, and pushing power.',
+                budgetTotal: '₹1,05,000/- Combined',
+                budgetItems: [
+                    'Robo Race: ₹30,000 Prize + ₹5,000 Arena = ₹35,000/-',
+                    'Robo Soccer: ₹30,000 Prize + ₹5,000 Arena = ₹35,000/-',
+                    'Robo Sumo: ₹30,000 Prize + ₹5,000 Arena = ₹35,000/-'
+                ],
+                revenueTotal: '₹30,000/- Combined',
+                revenueDetails: '60 Teams Total (20 Teams per event × ₹500 Entry Fee = ₹10,000 each)',
+                themeIntegration: 'Planetary rover obstacle course (Robo Race), Space Station sports zone (Robo Soccer), and Extraterrestrial stability testing ring (Robo Sumo).',
+                outcome: 'Develops reusable robotic platforms, autonomous navigation systems, multi-robot coordination, and high-traction industrial automation prototypes.',
+                photoUrl: 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'line-follower',
+                row: 2,
+                dateBadge: '3rd Feb',
+                fullDate: '3rd February 2027',
+                title: 'Line Follower Bot Competition',
+                category: 'Intra-College Autonomous Robotics',
+                icon: 'fa-route',
+                timing: '4:00 PM to 6:00 PM',
+                venue: 'Gate 2, VIT',
+                shortDesc: 'A robotics competition where autonomous robots navigate a predefined track by detecting and following a line.',
+                fullDesc: 'An intra-college competition exclusively for students of Vidyalankar Institute of Technology. Challenges participants to design and build autonomous robots capable of following a predefined path using IR/optical sensor arrays and PID control algorithms while maintaining speed, stability, and accuracy.',
+                budgetTotal: '₹18,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹15,000/- (NEFT/Cheque)',
+                    'Track Printing and Stationery: ₹3,000/-'
+                ],
+                revenueTotal: '₹4,500/- Expected',
+                revenueDetails: 'Entry Fee: ₹300/team × 15 Expected VIT Teams = ₹4,500/-',
+                themeIntegration: 'The track represents a planetary mission navigation route with checkpoints, simulating autonomous rovers navigating predefined extraterrestrial paths.',
+                outcome: 'Encourages students to learn sensor-based autonomous navigation systems. As it is only for our students of VIT it will give them confidance and enable us to teach them further so that we can improve it and participate in national level events. ',
+                photoUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+
+            /* Individual Detailed Entries for 5th Feb Sub-Events */
+            {
+                id: 'robo-race',
+                row: 0,
+                dateBadge: '5th Feb',
+                fullDate: '5th February 2027',
+                title: 'Robo Race',
+                category: 'Planetary Rover Obstacle Navigation',
+                icon: 'fa-flag-checkered',
+                timing: '3:00 PM to 7:00 PM',
+                venue: 'Ground 2, VIT',
+                shortDesc: 'Navigate a space mission-inspired track overcoming obstacles with speed, precision, and control.',
+                fullDesc: 'Robo Race challenges participants to design and operate robots that navigate a designated track, overcoming uneven terrain and obstacles with speed, precision, and control. Tests skills in robotics, electronics, mechanical suspension, and control systems.',
+                budgetTotal: '₹35,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹30,000/- (NEFT/Cheque)',
+                    'Arena Building and Stationery: ₹5,000/-'
+                ],
+                revenueTotal: '₹10,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹500/team × 20 Expected Teams = ₹10,000/-',
+                themeIntegration: 'Features a space mission-inspired track with launch-site decorations, planetary terrain, and obstacle zones representing ISRO space exploration rovers.',
+                outcome: 'Promotes the development of reusable robotic platforms and autonomous navigation systems for institute exhibitions and future robotics projects.',
+                photoUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'robo-soccer',
+                row: 0,
+                dateBadge: '5th Feb',
+                fullDate: '5th February 2027',
+                title: 'Robo Soccer',
+                category: 'Multi-Robot Coordination Arena',
+                icon: 'fa-futbol',
+                timing: '3:00 PM to 7:00 PM',
+                venue: 'Gate 2, VIT',
+                shortDesc: 'Design and operate robots with effective manoeuvrability and ball-control mechanisms to play football.',
+                fullDesc: 'Robo Soccer challenges participants to design and operate robots capable of playing football in a controlled arena. Teams must develop robots with effective movement, manoeuvrability, coordination, and ball-control mechanisms to score against opposing teams.',
+                budgetTotal: '₹35,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹30,000/- (NEFT/Cheque)',
+                    'Arena Building and Stationery: ₹5,000/-'
+                ],
+                revenueTotal: '₹10,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹500/team × 20 Expected Teams = ₹10,000/-',
+                themeIntegration: 'Designed as a futuristic space station or planetary sports zone where remotely operated robotic units collaborate in a simulated extraterrestrial environment.',
+                outcome: 'Leads to reusable robotic sports platforms and can be extended into autonomous multi-robot coordination and AI-based decision-making projects.',
+                photoUrl: 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            },
+            {
+                id: 'robo-sumo',
+                row: 0,
+                dateBadge: '5th Feb',
+                fullDate: '5th February 2027',
+                title: 'Robo Sumo',
+                category: 'Autonomous & RC Ring Push Combat',
+                icon: 'fa-circle-dot',
+                timing: '3:00 PM to 7:00 PM',
+                venue: 'Gate 2, VIT',
+                shortDesc: 'Design high-traction robots that compete to push opponents outside a designated circular arena.',
+                fullDesc: 'Robo Sumo tests participants’ ability to design robots that compete to push their opponents outside a designated circular arena. Focuses on robot stability, traction, weight distribution, high-torque motor selection, sensor integration, and rapid decision-making.',
+                budgetTotal: '₹35,000/-',
+                budgetItems: [
+                    'Prize Money (Winner and Runner-up): ₹30,000/- (NEFT/Cheque)',
+                    'Arena Building and Stationery: ₹5,000/-'
+                ],
+                revenueTotal: '₹10,000/- Expected',
+                revenueDetails: 'Entry Fee: ₹500/team × 20 Expected Teams = ₹10,000/-',
+                themeIntegration: 'Represents a simulated planetary testing zone where robotic units compete to maintain stability and control within a restricted surface.',
+                outcome: 'Encourages compact, high-performance robotic systems adaptable for industrial automation, material handling, and autonomous obstacle-response applications.',
+                photoUrl: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&w=1000&q=80',
+                schedule: []
+            }
+        ];
+
+        let currentModalEventId = 'unveiling';
+
+        /* ============================================================================
+         * 2. RENDER GLOWING RAILWAY TIMELINE & OUTCOMES CARDS
+         * ============================================================================ */
+        function renderTimelineAndOutcomes() {
+            const row1Container = document.getElementById('railway-row-1');
+            const row2Container = document.getElementById('railway-row-2');
+            const mobileContainer = document.getElementById('railway-mobile');
+
+            const row1Events = EVENTS_DATA.filter(e => e.row === 1);
+            const row2Events = EVENTS_DATA.filter(e => e.row === 2);
+
+            // Helper for Desktop Timeline Node Card
+            const createStationHTML = (ev) => `
+                <div onclick="openEventModal('${ev.id}')" class="group cursor-pointer flex flex-col items-center">
+                    <!-- Date Pill Above Line -->
+                    <div class="mb-3 px-4 py-1.5 rounded-full bg-slate-900 border border-yellow-400/60 text-yellow-200 font-display font-bold text-xs shadow-lg group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all">
+                        ${ev.dateBadge}
+                    </div>
+
+                    <!-- Glowing Timeline Dot -->
+                    <div class="track-node my-2" title="${ev.title}"></div>
+
+                    <!-- Liquid Glass Event Card Below Dot -->
+                    <div class="w-full mt-4 liquid-glass-interactive rounded-2xl p-4 text-center flex flex-col justify-between min-h-[215px]">
+                        <div class="space-y-2.5">
+                            <div class="w-11 h-11 mx-auto rounded-xl bg-blue-500/15 border border-yellow-400/40 flex items-center justify-center text-yellow-300 text-lg group-hover:scale-110 group-hover:text-yellow-400 transition-all">
+                                <i class="fa-solid ${ev.icon}"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-xs sm:text-sm text-white leading-snug group-hover:text-yellow-300 transition-colors">
+                                ${ev.title}
+                            </h3>
+                            <p class="text-[11px] text-slate-200 line-clamp-3 leading-relaxed">
+                                ${ev.shortDesc}
+                            </p>
+                        </div>
+                        <div class="pt-3 mt-2 border-t border-white/15 flex items-center justify-between text-[11px] text-yellow-300 font-semibold">
+                            <span>${ev.budgetTotal}</span>
+                            <span class="group-hover:translate-x-1 transition-transform">Details <i class="fa-solid fa-arrow-right ml-0.5"></i></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            row1Container.innerHTML = row1Events.map(createStationHTML).join('');
+            row2Container.innerHTML = row2Events.map(createStationHTML).join('');
+
+            // Mobile chronological order (Row 1 + Reversed Row 2 so dates go Jan 20 -> Feb 12)
+            const chronologicalMobile = [...row1Events, ...[...row2Events].reverse()];
+            mobileContainer.innerHTML = chronologicalMobile.map(ev => `
+                <div onclick="openEventModal('${ev.id}')" class="relative group cursor-pointer">
+                    <div class="track-node !w-5 !h-5 !absolute -left-[34px] top-5"></div>
+                    <div class="liquid-glass-interactive rounded-2xl p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 font-display text-xs font-bold">${ev.dateBadge} 2027</span>
+                            <span class="text-xs font-mono text-cyan-300 font-semibold">${ev.budgetTotal}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center text-yellow-300">
+                                <i class="fa-solid ${ev.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-sm text-white">${ev.title}</h3>
+                                <p class="text-[11px] text-slate-400">${ev.venue} • ${ev.timing}</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">${ev.shortDesc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ============================================================================
+         * 3. MODAL CONTROLLER & CUSTOM DESKTOP PHOTO UPLOADER
+         * ============================================================================ */
+        function openEventModal(eventId) {
+            const ev = EVENTS_DATA.find(item => item.id === eventId);
+            if (!ev) return;
+            currentModalEventId = eventId;
+
+            document.getElementById('modal-date-badge').textContent = ev.fullDate;
+            document.getElementById('modal-venue-text').textContent = ev.venue;
+            document.getElementById('modal-category').textContent = ev.category;
+            document.getElementById('modal-title').textContent = ev.title;
+            document.getElementById('modal-timing').innerHTML = `<i class="fa-regular fa-clock mr-1.5"></i>${ev.timing}`;
+            document.getElementById('modal-description').textContent = ev.fullDesc;
+
+            // Left-side Budget & Revenue
+            document.getElementById('modal-budget-total').textContent = ev.budgetTotal;
+            document.getElementById('modal-budget-items').innerHTML = ev.budgetItems.map(item => `<li>• ${item}</li>`).join('');
+            document.getElementById('modal-revenue-total').textContent = ev.revenueTotal;
+            document.getElementById('modal-revenue-details').textContent = ev.revenueDetails;
+
+            // Theme & Outcome
+            document.getElementById('modal-theme-text').textContent = ev.themeIntegration;
+            document.getElementById('modal-outcome-text').textContent = ev.outcome;
+
+            // Right-side Image
+            const imgEl = document.getElementById('modal-image');
+            const savedCustomPhoto = localStorage.getItem('algorhythm_photo_' + ev.id);
+            const configuredPath = EVENT_PHOTOS[ev.id] || ev.photoUrl;
+
+            imgEl.onerror = function () {
+                this.onerror = null;
+                this.src = DEFAULT_FALLBACK_PHOTOS[ev.id] || ev.photoUrl;
+            };
+
+            if (savedCustomPhoto) {
+                imgEl.src = savedCustomPhoto;
+                document.getElementById('modal-img-caption').textContent = `${ev.title} – Custom Saved Photo`;
+            } else {
+                imgEl.src = configuredPath;
+                document.getElementById('modal-img-caption').textContent = `${ev.title} – Visual Preview`;
+            }
+
+            // Extra Container (Schedule, Problem Statements, or Robo Wars Bracket)
+            const extraContainer = document.getElementById('modal-extra-container');
+            let extraHTML = '';
+
+            if (ev.problemStatements && ev.problemStatements.length > 0) {
+                extraHTML += `
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-yellow-400/25 space-y-2">
+                        <div class="text-xs font-display font-bold uppercase tracking-wider text-yellow-300">
+                            <i class="fa-solid fa-list-check mr-1.5"></i> 8 Official Problem Statements (Annexure-II)
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300 pt-1">
+                            ${ev.problemStatements.map(ps => `<div class="p-2 rounded-lg bg-slate-950/70 border border-white/5">${ps}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (ev.hasBracket) {
+                extraHTML += `
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-yellow-400/35 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-display font-bold uppercase tracking-wider text-yellow-300">
+                                <i class="fa-solid fa-sitemap mr-1.5"></i> 16-Team Double Elimination Flow (Page 4 Diagram)
+                            </span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-yellow-400/20 text-yellow-300">Winner's & Loser's Survival Bracket</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-[11px]">
+                            <div class="bracket-card p-2.5 rounded-xl">
+                                <div class="font-bold text-white">Stage 1 (Opening)</div>
+                                <div class="text-yellow-300">16 Teams Compete</div>
+                                <div class="text-slate-400 text-[10px] mt-1">→ 8 Winners to WB R2<br>→ 8 Losers drop to LB R1</div>
+                            </div>
+                            <div class="bracket-card p-2.5 rounded-xl">
+                                <div class="font-bold text-cyan-300">Winner's Bracket</div>
+                                <div class="text-slate-300">WB R2 (8) → WB R3 (4) → WB Semis (2)</div>
+                                <div class="text-slate-400 text-[10px] mt-1">Losers drop to LB R2 & LB Semis</div>
+                            </div>
+                            <div class="bracket-card p-2.5 rounded-xl">
+                                <div class="font-bold text-yellow-300">Loser's Survival</div>
+                                <div class="text-slate-300">LB R1 (8) → LB R2 (8) → LB Semis (6)</div>
+                                <div class="text-red-300 text-[10px] mt-1">4 + 4 + 2 Teams Eliminated</div>
+                            </div>
+                            <div class="bracket-card p-2.5 rounded-xl border-emerald-400/40 bg-emerald-950/30">
+                                <div class="font-bold text-emerald-300">GRAND FINAL</div>
+                                <div class="text-white">WB Finalists vs 2 LB Winners</div>
+                                <div class="text-emerald-200 text-[10px] mt-1">Determines ₹2,00,000 Champions</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (ev.schedule && ev.schedule.length > 0) {
+                extraHTML += `
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/10 space-y-2.5">
+                        <div class="text-xs font-display font-bold uppercase tracking-wider text-yellow-300">
+                            <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> Detailed Event Schedule
+                        </div>
+                        <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            ${ev.schedule.map(s => `
+                                <div class="p-2.5 rounded-xl bg-slate-950/70 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                    <div>
+                                        <span class="text-xs font-bold text-white">${s.title}</span>
+                                        <p class="text-[11px] text-slate-400">${s.desc}</p>
+                                    </div>
+                                    <span class="text-[11px] font-mono text-yellow-300 shrink-0">${s.time}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            extraContainer.innerHTML = extraHTML;
+
+            // Show Modal
+            const modal = document.getElementById('event-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEventModal() {
+            const modal = document.getElementById('event-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function navigateModal(direction) {
+            const idx = EVENTS_DATA.findIndex(e => e.id === currentModalEventId);
+            if (idx === -1) return;
+            const nextIdx = (idx + direction + EVENTS_DATA.length) % EVENTS_DATA.length;
+            openEventModal(EVENTS_DATA[nextIdx].id);
+        }
+
+        // Instant Custom Photo Uploader
+        function handleCustomPhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                const evObj = EVENTS_DATA.find(item => item.id === currentModalEventId);
+                if (evObj) {
+                    evObj.photoUrl = dataUrl;
+                }
+                try {
+                    localStorage.setItem('algorhythm_photo_' + currentModalEventId, dataUrl);
+                    const badge = document.getElementById('photo-save-status');
+                    if (badge) {
+                        badge.textContent = 'Saved in Chrome!';
+                        badge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
+                    }
+                } catch (err) {
+                    console.warn('Image too large for localStorage, kept in session memory.');
+                }
+                document.getElementById('modal-image').src = dataUrl;
+                document.getElementById('modal-img-caption').textContent = `${evObj ? evObj.title : 'Event'} – Custom Saved Photo`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetCurrentEventPhoto() {
+            localStorage.removeItem('algorhythm_photo_' + currentModalEventId);
+            const badge = document.getElementById('photo-save-status');
+            if (badge) {
+                badge.textContent = 'Reset to Default';
+                badge.className = 'text-[10px] px-2 py-0.5 rounded bg-yellow-400/20 text-yellow-300';
+            }
+            openEventModal(currentModalEventId);
+        }
+
+        // Close modal on Escape key or backdrop click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeEventModal();
+        });
+        document.getElementById('event-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'event-modal') closeEventModal();
+        });
+
+        /* ============================================================================
+         * 4. BUDGET TABS SWITCHER
+         * ============================================================================ */
+        function switchBudgetTab(tabName) {
+            const tabs = ['annexure3', 'format2', 'revenue'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById(`budget-tab-${t}`);
+                const btnEl = document.getElementById(`tab-btn-${t}`);
+                if (t === tabName) {
+                    contentEl.classList.remove('hidden');
+                    btnEl.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-yellow-400 text-slate-950 shadow-lg shadow-yellow-400/30 transition-all';
+                } else {
+                    contentEl.classList.add('hidden');
+                    btnEl.className = 'px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-yellow-300 transition-all';
+                }
+            });
+        }
+
+        /* ============================================================================
+         * 5. THREE.JS ANDROMEDA GALAXY & SMOOTH PLANETS + CLICK WARP ANIMATION ENGINE
+         * ============================================================================ */
+        let warpEnergy = 0;
+        let activePlanetFocusIndex = -1;
+        let planetFocusPulse = 0;
+
+        // Global function to trigger cosmic warp & planetary animation on any click or page change
+        function triggerCosmicWarp(clientX, clientY, intensity = 1.0) {
+            warpEnergy = Math.min(2.6, warpEnergy + intensity);
+            activePlanetFocusIndex = (activePlanetFocusIndex + 1) % 3;
+            planetFocusPulse = 1.0;
+
+            // Create glowing neon yellow/blue cosmic shockwave ring at click coordinates
+            const wave = document.createElement('div');
+            wave.className = 'cosmic-click-wave';
+            wave.style.left = `${clientX}px`;
+            wave.style.top = `${clientY}px`;
+            document.body.appendChild(wave);
+            setTimeout(() => wave.remove(), 850);
+        }
+
+        // Trigger cosmic warp and planetary pulse on EVERY click anywhere on the page
+        window.addEventListener('click', (e) => {
+            triggerCosmicWarp(e.clientX, e.clientY, 1.15);
+        });
+
+        function initGalaxyAndPlanetsScene() {
+            const container = document.getElementById('webgl-container');
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 14, 34);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // GROUP 1: ANDROMEDA SPIRAL GALAXY (Prominent on Page 1, recedes as user scrolls)
+            const galaxyGroup = new THREE.Group();
+            scene.add(galaxyGroup);
+
+            const particleCount = 18000;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const colorCore = new THREE.Color('#fef9c3');
+            const colorInner = new THREE.Color('#38bdf8');
+            const colorOuter = new THREE.Color('#3b82f6');
+            const colorTip = new THREE.Color('#facc15');
+
+            const branches = 4;
+            const maxRadius = 28;
+            const spinFactor = 1.15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                const r = Math.pow(Math.random(), 1.6) * maxRadius;
+                const branchAngle = ((i % branches) / branches) * Math.PI * 2;
+                const spinAngle = r * spinFactor;
+
+                const spread = 0.35 * (maxRadius - r * 0.6) * 0.12;
+                const randX = (Math.random() - 0.5) * spread * 4;
+                const randY = (Math.random() - 0.5) * (spread * 1.4);
+                const randZ = (Math.random() - 0.5) * spread * 4;
+
+                positions[i3] = Math.cos(branchAngle + spinAngle) * r + randX;
+                positions[i3 + 1] = randY;
+                positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * r + randZ;
+
+                // Blend colors from bright core to blue/yellow arms
+                const mixedColor = colorCore.clone();
+                if (r < 6) {
+                    mixedColor.lerp(colorInner, r / 6);
+                } else if (r < 18) {
+                    mixedColor.copy(colorInner).lerp(colorOuter, (r - 6) / 12);
+                } else {
+                    mixedColor.copy(colorOuter).lerp(colorTip, (r - 18) / 10);
+                }
+
+                colors[i3] = mixedColor.r;
+                colors[i3 + 1] = mixedColor.g;
+                colors[i3 + 2] = mixedColor.b;
+            }
+
+            const galaxyGeo = new THREE.BufferGeometry();
+            galaxyGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            galaxyGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const galaxyMat = new THREE.PointsMaterial({
+                size: 0.15,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                opacity: 0.94,
+                depthWrite: false
+            });
+
+            const galaxyPoints = new THREE.Points(galaxyGeo, galaxyMat);
+            galaxyGroup.add(galaxyPoints);
+            galaxyGroup.rotation.x = 0.42;
+            galaxyGroup.rotation.z = -0.18;
+
+            // GROUP 2: SMOOTH PLANETS & ORBITAL RINGS (Approach camera on scroll & pulse on every click)
+            const planetsGroup = new THREE.Group();
+            planetsGroup.position.y = -32;
+            scene.add(planetsGroup);
+
+            const ambientLight = new THREE.AmbientLight(0x94a3b8, 0.95);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0x38bdf8, 3.0, 130);
+            pointLight1.position.set(18, 15, 22);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xfacc15, 2.5, 130);
+            pointLight2.position.set(-22, -12, 18);
+            scene.add(pointLight2);
+
+            // Procedural smooth banded planet texture generator
+            function createSmoothPlanetTexture(c1, c2, c3) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 512;
+                canvas.height = 256;
+                const ctx = canvas.getContext('2d');
+                const grad = ctx.createLinearGradient(0, 0, 0, 256);
+                grad.addColorStop(0, c1);
+                grad.addColorStop(0.5, c2);
+                grad.addColorStop(1, c3);
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, 512, 256);
+
+                ctx.fillStyle = 'rgba(255,255,255,0.07)';
+                for (let y = 12; y < 256; y += 22) {
+                    ctx.fillRect(0, y, 512, 8);
+                }
+                return new THREE.CanvasTexture(canvas);
+            }
+
+            // Planet 1: Cyan-Blue Gas Giant with Glowing Ring (Right Side)
+            const planet1Tex = createSmoothPlanetTexture('#0284c7', '#38bdf8', '#1e1b4b');
+            const planet1 = new THREE.Mesh(
+                new THREE.SphereGeometry(4.8, 48, 48),
+                new THREE.MeshStandardMaterial({ map: planet1Tex, roughness: 0.4, metalness: 0.15 })
+            );
+            planet1.position.set(14, 4, 6);
+            planetsGroup.add(planet1);
+
+            const ringGeo = new THREE.RingGeometry(6.2, 9.4, 64);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: 0xfacc15,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.38
+            });
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringMesh.rotation.x = Math.PI / 2.3;
+            ringMesh.rotation.y = 0.25;
+            planet1.add(ringMesh);
+
+            // Planet 2: Golden-Amber Terrestrial Sphere (Left Side)
+            const planet2Tex = createSmoothPlanetTexture('#eab308', '#facc15', '#713f12');
+            const planet2 = new THREE.Mesh(
+                new THREE.SphereGeometry(3.6, 48, 48),
+                new THREE.MeshStandardMaterial({ map: planet2Tex, roughness: 0.5, metalness: 0.15 })
+            );
+            planet2.position.set(-15, -7, 9);
+            planetsGroup.add(planet2);
+
+            // Planet 3: Deep Cobalt Ice Moon (Center-Low)
+            const planet3Tex = createSmoothPlanetTexture('#2563eb', '#60a5fa', '#1e3a8a');
+            const planet3 = new THREE.Mesh(
+                new THREE.SphereGeometry(2.6, 48, 48),
+                new THREE.MeshStandardMaterial({ map: planet3Tex, roughness: 0.35, metalness: 0.2 })
+            );
+            planet3.position.set(4, -18, 12);
+            planetsGroup.add(planet3);
+
+            const planetMeshes = [planet1, planet2, planet3];
+
+            // Scroll & Mouse Parallax Tracking
+            let targetScroll = 0;
+            let currentScroll = 0;
+            let mouseX = 0;
+            let mouseY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            const blurLayer = document.getElementById('planet-blur-layer');
+            const navPills = document.querySelectorAll('.nav-pill');
+            const sections = ['page-1', 'page-2', 'page-3', 'page-4'];
+
+            window.addEventListener('scroll', () => {
+                const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+                targetScroll = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+                const blurPx = Math.min(12, targetScroll * 15);
+                container.style.filter = `blur(${blurPx.toFixed(1)}px)`;
+                blurLayer.style.opacity = Math.min(0.95, targetScroll * 1.35).toFixed(2);
+
+                let currentSection = 'page-1';
+                sections.forEach(secId => {
+                    const el = document.getElementById(secId);
+                    if (el && window.scrollY >= el.offsetTop - 260) {
+                        currentSection = secId;
+                    }
+                });
+                navPills.forEach(pill => {
+                    if (pill.getAttribute('data-nav') === currentSection) {
+                        pill.className = 'nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-yellow-400/20 text-yellow-300 border border-yellow-400/60 shadow-[0_0_12px_rgba(250,204,21,0.3)]';
+                    } else {
+                        pill.className = 'nav-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-yellow-300 transition-all';
+                    }
+                });
+            });
+
+            // Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                currentScroll += (targetScroll - currentScroll) * 0.06;
+
+                // Decay click warp energy smoothly
+                warpEnergy *= 0.92;
+                planetFocusPulse *= 0.94;
+
+                // Rotate Andromeda Galaxy continuously (speeds up dynamically on click warp!)
+                galaxyGroup.rotation.y += 0.0015 + warpEnergy * 0.018;
+                galaxyGroup.position.y = currentScroll * 18;
+                galaxyGroup.position.z = -currentScroll * 22 + warpEnergy * 3.5;
+                galaxyMat.opacity = Math.max(0.24, 0.94 - currentScroll * 0.65);
+
+                // Bring Smooth Planets up into view as user scrolls & animate them on every click
+                planetsGroup.position.y = -30 + currentScroll * 38 + warpEnergy * 2.2;
+                planet1.rotation.y += 0.004 + warpEnergy * 0.025;
+                planet2.rotation.y -= 0.005 + warpEnergy * 0.025;
+                planet3.rotation.y += 0.006 + warpEnergy * 0.025;
+
+                // Pulse the targeted planet on click
+                planetMeshes.forEach((mesh, idx) => {
+                    const targetScale = (idx === activePlanetFocusIndex) ? (1 + planetFocusPulse * 0.22) : 1;
+                    mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.12);
+                });
+
+                // Subtle Mouse + Click Warp Camera Parallax
+                camera.position.x += (mouseX * 2.5 - camera.position.x) * 0.05;
+                camera.position.y += (14 - currentScroll * 10 - mouseY * 1.8 - camera.position.y) * 0.05;
+                camera.position.z += (34 - warpEnergy * 4.5 - camera.position.z) * 0.08;
+                camera.lookAt(0, 0, 0);
+
+                renderer.render(scene, camera);
+            }
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            animate();
+        }
+
+        // Initialize application on window load
+        window.onload = function () {
+            loadSavedLogo();
+            renderTimelineAndOutcomes();
+            initGalaxyAndPlanetsScene();
+        };
+    </script>
+</body>
+
+</html>
